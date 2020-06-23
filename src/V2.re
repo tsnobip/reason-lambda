@@ -1,22 +1,49 @@
 /**
-   Type definitions for AWS Lambda v1 Payload
+   Type definitions for AWS Lambda v2 Payload
    http://docs.aws.amazon.com/lambda
    https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
  */
-module Response = {
-  type t('a);
+module Response: {
+  type t;
+
+  /**
+   * create a response from an optional stringified body
+   * and the different available options
+   */
+  [@bs.obj]
+  external make:
+    (
+      ~cookies: array(string)=?,
+      ~isBase64Encoded: bool=?,
+      ~statusCode: int,
+      ~headers: Js.Dict.t(string)=?,
+      ~body: string=?,
+      unit
+    ) =>
+    t;
+
+  /**
+   * create a response from a JSON compliant body
+   */
+  let fromBody: 'a => t;
+} = {
+  [@unboxed]
+  type t =
+    | Response('a): t;
 
   [@bs.obj]
   external make:
     (
       ~cookies: array(string)=?,
       ~isBase64Encoded: bool=?,
-      ~statusCode: int=?,
+      ~statusCode: int,
       ~headers: Js.Dict.t(string)=?,
-      ~body: 'a=?,
+      ~body: string=?,
       unit
     ) =>
-    t('a);
+    t;
+
+  let fromBody = body => Response(body);
 };
 
 module Context = Common.Context;
@@ -73,4 +100,4 @@ module Event = {
   };
 };
 
-type handler('a) = (Event.t, Context.t) => Js.Promise.t(Response.t('a));
+type handler = (Event.t, Context.t) => Js.Promise.t(Response.t);

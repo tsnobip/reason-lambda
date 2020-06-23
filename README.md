@@ -15,9 +15,9 @@ And add `@tsnobip/reason-lambda` to the `bs-dependencies` of `bsconfig.json`.
 ```reason
 open ReasonLambda.V2;
 type greetings = {greetings: string};
-let handler: handler(greetings) =
+let handler: handler =
   (_event, _context) =>
-    Response.make(~body={greetings: "Hello world!"}, ())->Js.Promise.resolve;
+    {greetings: "Hello world!"}->Response.fromBody->Js.Promise.resolve;
 ```
 
 You can see a working example with the Serverless framework [here](https://github.com/tsnobip/reason-sls-example).

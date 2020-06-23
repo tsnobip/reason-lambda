@@ -1,6 +1,6 @@
 {
   "name": "@tsnobip/reason-lambda",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bucklescript bindings for AWS lambda handlers (v1 and v2)",
   "repository": "git+https://github.com/tsnobip/reason-lambda.git",
   "keywords": [
